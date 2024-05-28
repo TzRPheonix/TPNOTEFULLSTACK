@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails du candidat</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .flex-container {
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            flex: 0 0 280px;
+        }
+        .content {
+            flex-grow: 1;
+            padding: 0 0 0 2%;
+        }
+        table th {
+            width: 30%;
+        }
+        .btn-group .btn {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="flex-container">
+    <div class="sidebar" th:insert="fragment/sidebar"></div>
+
+    <div class="content">
+        <h1>Détails du candidat</h1>
+
+        <div class="btn-group mb-2">
+            <a th:href="@{/candidates/{id}/edit(id=${candidate.id})}" class="btn btn-primary">Mettre à jour les données</a>
+            <a th:href="@{/candidates/{id}/delete(id=${candidate.id})}" class="btn btn-danger">Supprimer le candidat</a>
+        </div>
+
+        <table class="table">
+            <tr>
+                <th>Nom</th>
+                <td th:text="${candidate.name}"></td>
+            </tr>
+            <tr>
+                <th>Numéro de carte d'identité</th>
+                <td th:text="${candidate.numId}"></td>
+            </tr>
+            <tr>
+                <th>Date de naissance</th>
+                <td th:text="${#dates.format(candidate.dateOfBirth, 'dd-MM-yyyy')}"></td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td th:text="${candidate.address}"></td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td th:text="${candidate.email}"></td>
+            </tr>
+            <tr>
+                <th>Téléphone</th>
+                <td th:text="${candidate.phone}"></td>
+            </tr>
+            <tr>
+                <th>Note (1-10)</th>
+                <td th:text="${candidate.grade}"></td>
+            </tr>
+            <tr>
+                <th>Domaine technique</th>
+                <td th:text="${candidate.domain}"></td>
+            </tr>
+            <tr>
+                <th>Date de l'entretien</th>
+                <td th:text="${#dates.format(candidate.dateOfJobMeeting, 'dd-MM-yyyy')}"></td>
+            </tr>
+            <tr>
+                <th>Observation</th>
+                <td th:text="${candidate.observation}"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

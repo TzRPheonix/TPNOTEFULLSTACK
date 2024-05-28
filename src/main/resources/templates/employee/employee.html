@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employees</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .flex-container {
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            flex: 0 0 280px;
+        }
+        .content {
+            flex-grow: 1;
+            padding: 0 0 0 2%;
+        }
+    </style>
+</head>
+<body>
+<div class="flex-container">
+    <div class="sidebar" th:insert="fragment/sidebar"></div>
+
+    <div class="content">
+
+        <h1>Employés</h1>
+
+        <a href="/employees/new" class="btn btn-primary mb-2">Ajouter un employé</a>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Position</th>
+                <th scope="col">Email</th>
+                <th scope="col">Téléphone</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="employee : ${employees}">
+                <td th:text="${employee.name}"></td>
+                <td th:text="${employee.position}"></td>
+                <td th:text="${employee.email}"></td>
+                <td th:text="${employee.phone}"></td>
+                <td>
+                    <a th:href="@{/employees/{id}(id=${employee.id})}" class="btn btn-success">Voir</a>
+                    <a th:href="@{/employees/{id}/edit(id=${employee.id})}" class="btn btn-primary">Mettre à jour</a>
+                    <a th:href="@{/employees/{id}/delete(id=${employee.id})}" class="btn btn-danger">Supprimer</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

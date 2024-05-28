@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails de l'employé</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .flex-container {
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            flex: 0 0 280px;
+        }
+        .content {
+            flex-grow: 1;
+            padding: 0 0 0 2%;
+        }
+        table th {
+            width: 30%;
+        }
+        .btn-group .btn {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="flex-container">
+    <div class="sidebar" th:insert="fragment/sidebar"></div>
+
+    <div class="content">
+        <h1>Détails de l'employé</h1>
+
+        <div class="btn-group mb-2">
+            <a th:href="@{/employees/{id}/edit(id=${employee.id})}" class="btn btn-primary">Mettre à jour les données</a>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#leaveModal">Attribuer des congés</button>
+            <button class="btn btn-warning" data-toggle="modal" data-target="#absenceModal">Signaler les absences</button>
+            <a th:href="@{/employees/{id}/delete(id=${employee.id})}" class="btn btn-danger">Supprimer l'employé</a>
+        </div>
+
+        <div class="modal fade" id="leaveModal" tabindex="-1" role="dialog" aria-labelledby="leaveModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="leaveModalLabel">Donner des congés à l'employé</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form th:action="@{/employees/{id}/leaves(id=${employee.id})}" th:object="${leave}" method="post">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="startDate">Date de début des congés:</label>
+                                <input type="date" id="startDate" class="form-control" th:field="*{startDate}">
+                            </div>
+                            <div class="form-group">
+                                <label for="endDate">Date de fin des congés:</label>
+                                <input type="date" id="endDate" class="form-control" th:field="*{endDate}">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">OK</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="absenceModal" tabindex="-1" role="dialog" aria-labelledby="absenceModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="absenceModalLabel">Signaler une absence de l'employé</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form th:action="@{/employees/{id}/absences(id=${employee.id})}" th:object="${absence}" method="post">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="absenceDate">Date de l'absence:</label>
+                                <input type="date" id="absenceDate" class="form-control" th:field="*{absenceDate}">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">OK</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <table class="table">
+            <tr>
+                <th>Nom</th>
+                <td th:text="${employee.name}"></td>
+            </tr>
+            <tr>
+                <th>Occupation</th>
+                <td th:text="${employee.position}"></td>
+            </tr>
+            <tr>
+                <th>Salaire</th>
+                <td th:text="${employee.salary}"></td>
+            </tr>
+            <tr>
+                <th>Début du contrat</th>
+                <td th:text="${#dates.format(employee.dateOfStartJob, 'dd-MM-yyyy')}"></td>
+            </tr>
+            <tr>
+                <th>Fin du contrat</th>
+                <td th:text="${#dates.format(employee.dateOfEndJob, 'dd-MM-yyyy')}"></td>
+            </tr>
+            <tr>
+                <th>Numéro d'identification</th>
+                <td th:text="${employee.numId}"></td>
+            </tr>
+            <tr>
+                <th>Date de naissance</th>
+                <td th:text="${#dates.format(employee.dateOfBirth, 'dd-MM-yyyy')}"></td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td th:text="${employee.address}"></td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td th:text="${employee.email}"></td>
+            </tr>
+            <tr>
+                <th>Téléphone</th>
+                <td th:text="${employee.phone}"></td>
+            </tr>
+            <tr>
+                <th>Observations</th>
+                <td th:text="${employee.observation}"></td>
+            </tr>
+        </table>
+
+        <div class="accordion" id="leaveAccordion">
+            <div class="card">
+                <div class="card-header" id="leaveHeading">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#leaveCollapse" aria-expanded="true" aria-controls="leaveCollapse" th:inline="text">
+                            Congés ([[${employee.leaves.size()}]])
+                        </button>
+                    </h5>
+                </div>
+                <div id="leaveCollapse" class="collapse" aria-labelledby="leaveHeading" data-parent="#leaveAccordion">
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Début</th>
+                                <th scope="col">Fin</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="leave : ${employee.leaves}">
+                                <td th:text="${#dates.format(leave.startDate, 'dd-MM-yyyy')}"></td>
+                                <td th:text="${#dates.format(leave.endDate, 'dd-MM-yyyy')}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion" id="absenceAccordion">
+            <div class="card">
+                <div class="card-header" id="absenceHeading">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#absenceCollapse" aria-expanded="true" aria-controls="absenceCollapse" th:inline="text">
+                            Absences ([[${employee.absences.size()}]])
+                        </button>
+                    </h5>
+                </div>
+                <div id="absenceCollapse" class="collapse" aria-labelledby="absenceHeading" data-parent="#absenceAccordion">
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                            <tr th:each="absence : ${employee.absences}">
+                                <th scope="col">Jour</th>
+                                <th th:text="${#dates.format(absence.absenceDate, 'dd-MM-yyyy')}"></th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

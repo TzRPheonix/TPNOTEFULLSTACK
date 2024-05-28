@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .flex-container {
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            flex: 0 0 280px;
+        }
+        .content {
+            flex-grow: 1;
+            padding: 10% 0 0 2%;
+        }
+    </style>
+</head>
+<body>
+<div class="flex-container">
+    <div class="sidebar" th:insert="fragment/sidebar"></div>
+
+    <div class="content">
+        <div class="container">
+            <div class="row justify-content-start">
+                <div class="col-md-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <p class="card-text" th:text="${employeeCount} + ' employé(s)'"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <p class="card-text" th:text="${candidateCount} + ' candidat(s)'"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

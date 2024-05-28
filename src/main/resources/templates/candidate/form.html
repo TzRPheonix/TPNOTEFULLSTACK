@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Candidats Form</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+    .flex-container {
+      display: flex;
+      height: 100vh;
+    }
+    .sidebar {
+      flex: 0 0 280px;
+    }
+    .content {
+      flex-grow: 1;
+      padding: 0 0 0 2%;
+    }
+    .limited-input {
+      width: 80%;
+    }
+  </style>
+</head>
+<body>
+<div class="flex-container">
+  <div class="sidebar" th:insert="fragment/sidebar"></div>
+
+  <div class="content">
+    <h1>Nouveau candidat</h1>
+
+    <form action="#" th:action="@{/candidates}" th:object="${candidate}" method="post">
+      <input type="hidden" th:field="*{id}">
+      <div class="form-group row limited-input">
+        <div class="col-md-6">
+          <label for="name">Nom</label>
+          <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Nom complet">
+        </div>
+        <div class="col-md-6">
+          <label for="numId">Numéro d'identification</label>
+          <input type="text" class="form-control limited-input" id="numId" th:field="*{numId}" placeholder="Numéro d'identification">
+        </div>
+      </div>
+      <div class="form-group row limited-input">
+        <div class="col-md-6">
+          <label for="address">Adresse</label>
+          <input type="text" class="form-control limited-input" id="address" th:field="*{address}" placeholder="Adresse">
+        </div>
+        <div class="col-md-6">
+          <label for="dateOfBirth">Date de naissance</label>
+          <input type="date" class="form-control limited-input" id="dateOfBirth" th:field="*{dateOfBirth}">
+        </div>
+      </div>
+      <div class="form-group row limited-input">
+        <div class="col-md-6">
+          <label for="email">Adresse email</label>
+          <input type="text" class="form-control limited-input" id="email" th:field="*{email}" placeholder="nom@example.com">
+        </div>
+        <div class="col-md-6">
+          <label for="phone">Numéro de téléphone</label>
+          <input type="text" class="form-control limited-input" id="phone" th:field="*{phone}" placeholder="Numéro de téléphone">
+        </div>
+      </div>
+      <div class="form-group row limited-input">
+        <div class="col-md-6">
+          <label for="domain">Domaine technique</label>
+          <input type="text" class="form-control limited-input" id="domain" th:field="*{domain}" placeholder="Domaine technique">
+        </div>
+        <div class="col-md-6">
+          <label for="grade">Évaluation (1-10)</label>
+          <input type="text" class="form-control limited-input" id="grade" th:field="*{grade}">
+        </div>
+        <div class="col-md-6">
+          <label for="dateOfJobMeeting">Date de l'entretien</label>
+          <input type="date" class="form-control limited-input" id="dateOfJobMeeting" th:field="*{dateOfJobMeeting}">
+        </div>
+      </div>
+      <div class="form-group limited-input">
+        <label for="observation">Observations</label>
+        <textarea class="form-control" id="observation" th:field="*{observation}"></textarea>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Sauvegarder le candidat</button>
+        <a href="/employees" class="btn btn-danger">Annuler</a>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>
